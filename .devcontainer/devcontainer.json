@@ -1,0 +1,22 @@
+{
+  "name": "Node.js & TypeScript",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:24",
+  "appPort": 3000,
+  "customizations": {
+    "vscode": {
+      "extensions": ["biomejs.biome", "ms-vscode.vscode-typescript-next"],
+      "settings": {
+        "editor.tabSize": 2,
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+          "source.fixAll.biome": "explicit"
+        },
+        "eslint.validate": ["javascript", "typescript"],
+        "[typescript]": {
+          "editor.defaultFormatter": "biomejs.biome"
+        }
+      }
+    }
+  },
+  "postCreateCommand": "pnpm install"
+}

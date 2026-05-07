@@ -1,0 +1,25 @@
+{
+  "name": "release-bot",
+  "version": "1.0.0",
+  "description": "Send messages when a new release is published",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "check": "biome check",
+    "build": "tsc -p tsconfig.build.json",
+    "start": "node dist/index.js",
+    "test": "vitest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.33.0",
+  "devDependencies": {
+    "@biomejs/biome": "2.4.14",
+    "@tsconfig/node24": "^24.0.4",
+    "@types/node": "^24.12.2",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.5"
+  }
+}
