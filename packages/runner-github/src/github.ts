@@ -1,5 +1,5 @@
 import type { Octokit, RestEndpointMethodTypes } from "@octokit/rest";
-import type { Repository, ServerType } from "@release-bot/db";
+import type { Repository, Server, ServerType, Subscription } from "@release-bot/db";
 import type { ISender, IWatchJob } from "@release-bot/runner-lib";
 import { DiscordSender, TelegramSender } from "@release-bot/runner-lib";
 import { prisma } from "./prisma.js";
@@ -32,17 +32,36 @@ export class GithubWatchJob implements IWatchJob {
     return response;
   }
 
-  private async sendReleaseMessage(repo: Repository, release: LatestReleaseResponse["data"]) {
-    await prisma.repository.update({
-      where: { id: repo.id },
-      data: { lastVersion: release.tag_name },
-    });
+  private async sendReleaseMessage(
+    subscription: Subscription & { repository: Repository; server: Server },
+    release: LatestReleaseResponse["data"],
+  ) {
+    const sender = this.senders[subscription.server.type];
+    if (!sender) throw new Error(`Unsupported sender type: ${subscription.server.type}`);
 
-    const sender = this.senders[repo.senderType];
-    if (!sender) throw new Error(`Unsupported sender type: ${repo.senderType}`);
+    console.log(`[INFO] Sending message for ${subscription.repository.name} to ${subscription.server.type}`);
+    await sender.sendMessage(
+      `New release for ${subscription.repository.name}: ${release.tag_name}\n${release.html_url}`,
+    );
+  }
 
-    console.log(`[INFO] Sending message for ${repo.name} to ${repo.senderType}`);
-    await sender.sendMessage(`New release for ${repo.name}: ${release.tag_name}\n${release.html_url}`);
+  async *forEachSubscription(repositoryId: string) {
+    let cursor: { id: string } | undefined;
+    let subscriptions: (Subscription & { repository: Repository; server: Server })[] = [];
+    while (true) {
+      subscriptions = await prisma.subscription.findMany({
+        where: { repositoryId },
+        include: { repository: true, server: true },
+        orderBy: { id: "asc" },
+        cursor,
+        take: 100,
+      });
+
+      if (subscriptions.length === 0) break;
+      cursor = { id: subscriptions[subscriptions.length - 1].id };
+
+      for (const subscription of subscriptions) yield subscription;
+    }
   }
 
   async run() {
@@ -58,8 +77,15 @@ export class GithubWatchJob implements IWatchJob {
         continue;
       }
       console.log(`[INFO] New release found for ${repo.name}: ${release.tag_name}`);
+      await prisma.repository.update({
+        where: { id: repo.id },
+        data: { lastVersion: release.tag_name },
+      });
 
-      await this.sendReleaseMessage(repo, release);
+      for await (const subscription of this.forEachSubscription(repo.id)) {
+        console.log(`[INFO] Notifying ${subscription.serverId} about new release of ${repo.name}`);
+        await this.sendReleaseMessage(subscription, release);
+      }
     }
   }
 }
