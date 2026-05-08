@@ -26,7 +26,7 @@ jobs:
       matrix:
         packages:
           - package: "@release-bot/bot-discord"
-            image: "release-bot-discord"
+            image: "bot-discord"
 
     steps:
       - name: lowercase image name
