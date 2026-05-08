@@ -1,5 +1,5 @@
 {
-  "name": "@release-bot/discord",
+  "name": "@release-bot/bot-discord",
   "version": "1.0.0",
   "description": "Handle commands from Discord",
   "main": "src/index.ts",
@@ -18,9 +18,8 @@
   "license": "ISC",
   "packageManager": "pnpm@10.33.0",
   "devDependencies": {
-    "@biomejs/biome": "catalog:",
-    "@tsconfig/node24": "catalog:",
     "@types/node": "catalog:",
+    "tsx": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
   },
