@@ -1,17 +1,21 @@
 {
   "name": "Node.js & TypeScript",
-  "image": "mcr.microsoft.com/devcontainers/typescript-node:24",
-  "appPort": 3000,
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspace",
   "customizations": {
     "vscode": {
-      "extensions": ["biomejs.biome", "ms-vscode.vscode-typescript-next"],
+      "extensions": [
+        "biomejs.biome",
+        "Prisma.prisma",
+        "-dbaeumer.vscode-eslint"
+      ],
       "settings": {
         "editor.tabSize": 2,
         "editor.formatOnSave": true,
         "editor.codeActionsOnSave": {
           "source.fixAll.biome": "explicit"
         },
-        "eslint.validate": ["javascript", "typescript"],
         "[typescript]": {
           "editor.defaultFormatter": "biomejs.biome"
         }

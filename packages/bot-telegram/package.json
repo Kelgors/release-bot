@@ -1,0 +1,32 @@
+{
+  "name": "@release-bot/telegram",
+  "version": "1.0.0",
+  "description": "Handle commands from Telegram",
+  "main": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "check": "biome check",
+    "build": "tsc -p tsconfig.build.json",
+    "start": "node dist/index.js",
+    "test": "vitest",
+    "test:run": "vitest --run",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.33.0",
+  "devDependencies": {
+    "@biomejs/biome": "catalog:",
+    "@tsconfig/node24": "catalog:",
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  },
+  "dependencies": {
+    "@release-bot/db": "workspace:*",
+    "dotenv": "catalog:",
+    "zod": "catalog:"
+  }
+}
