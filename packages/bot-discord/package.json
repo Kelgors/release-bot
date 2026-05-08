@@ -1,5 +1,5 @@
 {
-  "name": "@release-bot/discord",
+  "name": "@release-bot/bot-discord",
   "version": "1.0.0",
   "description": "Handle commands from Discord",
   "main": "src/index.ts",
