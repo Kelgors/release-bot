@@ -5,6 +5,7 @@ export const env = z
   .object({
     APP_STAGE: z.enum(["dev", "prod", "test"]),
     DATABASE_URL: z.string(),
-    DISCORD_BOT_TOKEN: z.string().optional(),
+    DISCORD_CLIENT_ID: z.string(),
+    DISCORD_BOT_TOKEN: z.string(),
   })
   .parse(process.env);

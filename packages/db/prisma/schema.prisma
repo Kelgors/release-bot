@@ -22,28 +22,45 @@ enum ServerType {
 }
 
 model Server {
-  id           String       @id @default(cuid())
-  type         ServerType
-  remoteId     String
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
-  repositories Repository[]
+  id       String     @id @default(cuid())
+  type     ServerType
+  name     String
+  remoteId String
+
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+  channels  Subscription[]
 
   @@unique([type, remoteId])
 }
 
 model Repository {
-  id            String         @id @default(cuid())
-  type          RepositoryType
-  name          String
-  owner         String
-  senderType    ServerType
-  senderOptions Json           @default("\"{}\"")
-  lastVersion   String?
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
-  serverId      String
-  server        Server         @relation(fields: [serverId], references: [id], onDelete: Cascade)
+  id          String         @id @default(cuid())
+  type        RepositoryType
+  owner       String
+  name        String
+  lastVersion String?
 
-  @@unique([serverId, type, owner, name])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  destinations Subscription[]
+
+  @@unique([type, owner, name])
+}
+
+model Subscription {
+  id           String @id @default(cuid())
+  serverId     String
+  channelId    String
+  repositoryId String
+
+  server     Server     @relation(fields: [serverId], references: [id], onDelete: Cascade)
+  repository Repository @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([serverId, channelId, repositoryId])
+  @@map("Channel")
 }

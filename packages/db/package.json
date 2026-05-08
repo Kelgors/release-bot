@@ -2,11 +2,12 @@
   "name": "@release-bot/db",
   "version": "1.0.0",
   "description": "Share database logic between packages",
-  "main": "src/generated/client.ts",
+  "main": "src/index.ts",
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "check": "biome check",
+    "prebuild": "prisma generate",
     "build": "tsc -p tsconfig.build.json",
     "test": "vitest",
     "test:run": "vitest --run",
@@ -19,11 +20,10 @@
   "license": "ISC",
   "packageManager": "pnpm@10.33.0",
   "devDependencies": {
-    "@biomejs/biome": "catalog:",
-    "@tsconfig/node24": "catalog:",
     "@types/node": "catalog:",
     "dotenv": "catalog:",
     "prisma": "^7.8.0",
+    "tsx": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
   },
