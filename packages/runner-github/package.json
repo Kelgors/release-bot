@@ -25,7 +25,6 @@
   },
   "dependencies": {
     "@octokit/rest": "catalog:",
-    "@prisma/adapter-pg": "catalog:",
     "@release-bot/db": "workspace:*",
     "@release-bot/runner-lib": "workspace:*",
     "dotenv": "catalog:",

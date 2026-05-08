@@ -51,9 +51,6 @@ importers:
 
   packages/bot-discord:
     dependencies:
-      '@prisma/adapter-pg':
-        specifier: 'catalog:'
-        version: 7.8.0
       '@release-bot/db':
         specifier: workspace:*
         version: link:../db
@@ -107,6 +104,9 @@ importers:
 
   packages/db:
     dependencies:
+      '@prisma/adapter-pg':
+        specifier: 'catalog:'
+        version: 7.8.0
       '@prisma/client':
         specifier: ^7.8.0
         version: 7.8.0(prisma@7.8.0(@types/react@19.2.14)(better-sqlite3@12.9.0)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(typescript@6.0.3))(typescript@6.0.3)
@@ -138,9 +138,6 @@ importers:
       '@octokit/rest':
         specifier: 'catalog:'
         version: 22.0.1
-      '@prisma/adapter-pg':
-        specifier: 'catalog:'
-        version: 7.8.0
       '@release-bot/db':
         specifier: workspace:*
         version: link:../db
